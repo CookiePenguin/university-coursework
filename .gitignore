@@ -1,0 +1,53 @@
+# Секреты и конфигурация с личными данными
+.env
+.env.*
+secrets/
+private/
+*password*
+*passwd*
+*secret*
+*token*
+*.pem
+*.key
+
+# Условия заданий и документы
+*.docx
+*.pdf
+*.odt
+*.ods
+*.pptx
+*.xlsx
+
+# Личные текстовые заметки
+*.txt
+!requirements.txt
+!CMakeLists.txt
+
+# Датасеты и исходные данные
+*.csv
+*.data
+
+# Временные файлы LibreOffice
+.~lock.*#
+
+# Python: временные файлы и виртуальные окружения
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Системные файлы и настройки редакторов
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Виртуальные окружения в любых вложенных папках
+**/.venv/
+**/venv/
+**/__pycache__/
+
+# Локальные настройки и резервные копии
+*.bak
+*.swp
+*.swo
+*~
