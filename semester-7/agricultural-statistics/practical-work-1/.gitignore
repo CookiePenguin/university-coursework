@@ -1,0 +1,10 @@
+# Виртуальное окружение Python
+.venv/
+
+# Временные файлы Python
+__pycache__/
+*.py[cod]
+
+# Исходные данные и результаты
+data/v12.xlsx
+results/
