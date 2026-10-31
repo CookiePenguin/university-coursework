@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практическая работа № 4 — Объекты и массивы</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f3f5;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #252525;
+        }
+
+        .console {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .console-header h2 {
+            font-size: 18px;
+            margin: 0;
+            color: #ffffff;
+        }
+
+        button {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #666;
+        }
+
+        #console-output {
+            white-space: pre-wrap;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+            min-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Практическая работа № 4</h1>
+        <h2>Объекты и массивы объектов в JavaScript</h2>
+
+        <p>Результаты выполнения заданий представлены ниже.</p>
+
+        <div class="console">
+
+            <div class="console-header">
+                <h2>Вывод программы</h2>
+                <button id="clear-output">Очистить вывод</button>
+            </div>
+
+            <pre id="console-output"></pre>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
