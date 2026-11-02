@@ -1,0 +1,15 @@
+indicator,group_i,group_ii
+physical_tractors,509,717
+serviceable_tractors,434,537
+reference_tractors,414,743
+reference_machine_shifts,96772,170618
+reference_machine_days,90138,176887
+transport_machine_days,25543,69141
+completed_standard_shifts,71430,163973
+total_work_thousand_reference_ha,713.8,1243.3
+transport_work_thousand_reference_ha,137.5,440.4
+tractor_drivers,572,676
+qualified_drivers,183,300
+arable_land_thousand_ha,49.9,66.3
+tractor_book_value_million_rub,746,1103
+agricultural_machinery_book_value_million_rub,1019,1416
