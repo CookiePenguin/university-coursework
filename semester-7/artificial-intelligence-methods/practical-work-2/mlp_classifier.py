@@ -1,10 +1,12 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.datasets import fetch_openml
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import MinMaxScaler
+
+# Фиксируем seed для воспроизводимости результатов
+np.random.seed(42)
 
 class MultilayerPerceptron:
     """
@@ -104,40 +106,30 @@ class MultilayerPerceptron:
         return np.argmax(output, axis=1)
 
 
-def load_mushroom_dataset():
-    """Загрузка и предобработка Mushroom Dataset"""
-    print("Загрузка Mushroom Dataset...")
-    mushroom = fetch_openml(name='mushroom', version=1, as_frame=False, parser='auto')
+def load_mushroom_dataset(filepath='agaricus-lepiota3.csv'):
+    # 1. Загружаем данные из локального CSV
+    df = pd.read_csv(filepath)
     
-    X = mushroom.data
-    y = mushroom.target
+    # 2. Отделяем целевую переменную (первый столбец 'class') от признаков
+    X = df.drop('class', axis=1).values
+    y = df['class'].values
     
-    # Кодирование категориальных признаков
-    X_encoded = np.zeros_like(X, dtype=float)
-    for i in range(X.shape[1]):
-        le = LabelEncoder()
-        X_encoded[:, i] = le.fit_transform(X[:, i])
+    # 3. Нормализация Min-Max
+    scaler = MinMaxScaler()
+    X = scaler.fit_transform(X)
     
-    # Кодирование целевой переменной (0 и 1)
-    y_encoder = LabelEncoder()
-    y_encoded = y_encoder.fit_transform(y)
+    # 4. Разделяем на обучающую и тестовую выборки (80% / 20%)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
-    # Правильная нормализация (Min-Max для каждого признака отдельно)
-    X_min = X_encoded.min(axis=0)
-    X_max = X_encoded.max(axis=0)
-    X_normalized = (X_encoded - X_min) / (X_max - X_min + 1e-8)
-    
-    # Разделение на обучающую и тестовую выборки
-    X_train, X_test, y_train, y_test = train_test_split(
-        X_normalized, y_encoded, test_size=0.2, random_state=42
-    )
-    
-    # Преобразование y в one-hot encoding для двух классов
-    y_train_onehot = np.zeros((y_train.size, 2))
-    y_train_onehot[np.arange(y_train.size), y_train] = 1
-    
-    y_test_onehot = np.zeros((y_test.size, 2))
-    y_test_onehot[np.arange(y_test.size), y_test] = 1
+    # 5. One-Hot Encoding для правильных ответов (классов)
+    def to_one_hot(y_array):
+        n_classes = 2
+        one_hot = np.zeros((len(y_array), n_classes))
+        one_hot[np.arange(len(y_array)), y_array] = 1
+        return one_hot
+
+    y_train_onehot = to_one_hot(y_train)
+    y_test_onehot = to_one_hot(y_test)
     
     return X_train, X_test, y_train, y_test, y_train_onehot, y_test_onehot
 
@@ -146,8 +138,8 @@ def main():
     X_train, X_test, y_train, y_test, y_train_onehot, y_test_onehot = load_mushroom_dataset()
     
     input_size = X_train.shape[1]
-    hidden_size = 20  # Количество нейронов в скрытом слое
-    output_size = 2   # Количество классов (ядовитый/съедобный)
+    hidden_size = 20
+    output_size = 2
     
     print("\n" + "="*60)
     print("Обучение MLP С использованием смещения (bias)")
@@ -177,8 +169,8 @@ def main():
     print("\n" + "="*60)
     print("СРАВНЕНИЕ РЕЗУЛЬТАТОВ")
     print("="*60)
-    print(f"MLP с bias:    {accuracy_with_bias * 100:.2f}%")
-    print(f"MLP без bias:  {accuracy_without_bias * 100:.2f}%")
+    print(f"MLP с bias:    {accuracy_with_bias * 100:.2f}% (Loss: {mlp_with_bias.loss_history[-1]:.4f})")
+    print(f"MLP без bias:  {accuracy_without_bias * 100:.2f}% (Loss: {mlp_without_bias.loss_history[-1]:.4f})")
     print(f"Разница:       {(accuracy_with_bias - accuracy_without_bias) * 100:.2f}%")
     
     # Визуализация
@@ -193,7 +185,7 @@ def main():
     plt.title('Сравнение точности моделей')
     plt.ylim(0, 105)
     for i, v in enumerate(accuracies):
-        plt.text(i, v + 2, f'{v:.1f}%', ha='center', fontweight='bold')
+        plt.text(i, v + 2, f'{v:.2f}%', ha='center', fontweight='bold')
     
     plt.subplot(1, 2, 2)
     plt.plot(mlp_with_bias.loss_history, label='С bias', color='#2ecc71', linewidth=2)
@@ -207,8 +199,6 @@ def main():
     plt.tight_layout()
     plt.savefig('comparison_results.png', dpi=300, bbox_inches='tight')
     print("\n✅ График успешно сохранен в файл: comparison_results.png")
-    # plt.show() # Закомментировано, так как в консоли без GUI это вызывает предупреждение
-
 
 if __name__ == "__main__":
     main()
